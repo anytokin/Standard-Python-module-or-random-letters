@@ -1,280 +1,505 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Standard Python Module or random letters?</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Standard Python module or random charset?</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-        }
-        h1 {
-            margin-top: 50px;
-            color: #333;
-        }
-        #game-container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-            margin: 20px;
-        }
-        #word {
-            font-size: 48px;
-            margin: 20px 0;
-            color: #555;
-        }
-        #buttons {
-            margin: 20px 0;
-        }
-        #buttons button {
-            font-size: 20px;
-            padding: 15px 25px;
-            margin: 10px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        #buttons button:hover {
-            background-color: #45a049;
-        }
-        #score {
-            font-size: 24px;
-            margin: 20px 0;
-            color: #333;
-        }
-        #tryAgain {
-            display: none;
-            margin: 20px 0;
-        }
-        #tryAgain button {
-            font-size: 20px;
-            padding: 15px 25px;
-            cursor: pointer;
-            background-color: #008CBA;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        #tryAgain button:hover {
-            background-color: #007bb5;
-        }
-        #mistakes {
-            text-align: left;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-        #mistakes h2 {
-            color: #333;
-        }
-        #mistakes ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        #mistakes li {
-            margin: 5px 0;
-            color: #555;
-        }
-        /* Confetti Canvas Styles */
-        #confetti-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+      }
+      h1 {
+        margin-top: 50px;
+        color: #333;
+      }
+      #game-container {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+        margin: 20px;
+      }
+      #word {
+        font-size: 48px;
+        margin: 20px 0;
+        color: #555;
+      }
+      #buttons {
+        margin: 20px 0;
+      }
+      #buttons button {
+        font-size: 20px;
+        padding: 15px 25px;
+        margin: 10px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      #buttons button:hover {
+        background-color: #45a049;
+      }
+      #score {
+        font-size: 24px;
+        margin: 20px 0;
+        color: #333;
+      }
+      #tryAgain {
+        display: none;
+        margin: 20px 0;
+      }
+      #tryAgain button {
+        font-size: 20px;
+        padding: 15px 25px;
+        cursor: pointer;
+        background-color: #008cba;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+      #tryAgain button:hover {
+        background-color: #007bb5;
+      }
+      #mistakes {
+        text-align: left;
+        max-width: 600px;
+        margin: 20px auto;
+      }
+      #mistakes h2 {
+        color: #333;
+      }
+      #mistakes ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      #mistakes li {
+        margin: 5px 0;
+        color: #555;
+      }
+      /* Confetti Canvas Styles */
+      #confetti-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+      }
     </style>
-</head>
-<body>
-    <h1>Standard Python Module or random letters?</h1>
+  </head>
+  <body>
+    <h1>Standard Python module or random letters?</h1>
     <div id="game-container">
-        <div id="word"></div>
-        <div id="buttons">
-            <button onclick="guess('module')">Standard Python Module</button>
-            <button onclick="guess('altered')">Random letters</button>
-        </div>
-        <div id="score"></div>
-        <div id="tryAgain">
-            <button onclick="startGame()">Try Again</button>
-        </div>
+      <div id="word"></div>
+      <div id="buttons">
+        <button onclick="guess('module')">Standard Python module</button>
+        <button onclick="guess('altered')">Random letters</button>
+      </div>
+      <div id="score"></div>
+      <div id="tryAgain">
+        <button onclick="startGame()">Try Again</button>
+      </div>
     </div>
     <div id="mistakes"></div>
     <!-- Confetti Canvas -->
     <canvas id="confetti-canvas"></canvas>
     <script>
-        // List of all modules
-        const modules = [
-            'abc', 'aifc', 'argparse', 'array', 'ast', 'asynchat', 'asyncio', 'asyncore',
-            'atexit', 'audioop', 'base64', 'bdb', 'binascii', 'bisect', 'builtins', 'bz2',
-            'calendar', 'cgi', 'cgitb', 'chunk', 'cmath', 'cmd', 'code', 'codecs', 'codeop',
-            'collections', 'colorsys', 'compileall', 'concurrent', 'configparser', 'contextlib',
-            'contextvars', 'copy', 'copyreg', 'cProfile', 'crypt', 'csv', 'ctypes', 'curses',
-            'dataclasses', 'datetime', 'dbm', 'decimal', 'difflib', 'dis', 'distutils',
-            'doctest', 'email', 'encodings', 'ensurepip', 'enum', 'errno', 'faulthandler',
-            'fcntl', 'filecmp', 'fileinput', 'fnmatch', 'fractions', 'ftplib', 'functools',
-            'gc', 'getopt', 'getpass', 'gettext', 'glob', 'graphlib', 'grp', 'gzip', 'hashlib',
-            'heapq', 'hmac', 'html', 'http', 'idlelib', 'imaplib', 'imghdr', 'imp', 'importlib',
-            'inspect', 'io', 'ipaddress', 'itertools', 'json', 'keyword', 'linecache', 'locale',
-            'logging', 'lzma', 'mailbox', 'mailcap', 'marshal', 'math', 'mimetypes', 'mmap',
-            'modulefinder', 'msilib', 'msvcrt', 'multiprocessing', 'netrc', 'nis', 'nntplib',
-            'numbers', 'operator', 'optparse', 'os', 'ossaudiodev', 'pathlib', 'pdb', 'pickle',
-            'pickletools', 'pipes', 'pkgutil', 'platform', 'plistlib', 'poplib', 'posix', 'pprint',
-            'profile', 'pstats', 'pty', 'pwd', 'py_compile', 'pyclbr', 'pydoc', 'queue', 'quopri',
-            'random', 're', 'readline', 'reprlib', 'resource', 'rlcompleter', 'runpy', 'sched',
-            'secrets', 'select', 'selectors', 'shelve', 'shlex', 'shutil', 'signal', 'site',
-            'sitecustomize', 'smtpd', 'smtplib', 'sndhdr', 'socket', 'socketserver', 'spwd',
-            'sqlite3', 'ssl', 'stat', 'statistics', 'string', 'stringprep', 'struct', 'subprocess',
-            'sunau', 'symtable', 'sys', 'sysconfig', 'syslog', 'tabnanny', 'tarfile', 'telnetlib',
-            'tempfile', 'termios', 'test', 'textwrap', 'threading', 'time', 'timeit', 'tkinter',
-            'token', 'tokenize', 'tomllib', 'trace', 'traceback', 'tracemalloc', 'tty', 'turtle',
-            'turtledemo', 'types', 'typing', 'unicodedata', 'unittest', 'urllib', 'usercustomize',
-            'uu', 'uuid', 'venv', 'warnings', 'wave', 'weakref', 'webbrowser', 'winreg',
-            'winsound', 'wsgiref', 'xdrlib', 'xml', 'xmlrpc', 'zipapp', 'zipfile', 'zipimport',
-            'zlib', 'zoneinfo'
-        ];
+      // List of all modules
+      const modules = [
+        'abc',
+        'aifc',
+        'argparse',
+        'array',
+        'ast',
+        'asynchat',
+        'asyncio',
+        'asyncore',
+        'atexit',
+        'audioop',
+        'base64',
+        'bdb',
+        'binascii',
+        'bisect',
+        'builtins',
+        'bz2',
+        'calendar',
+        'cgi',
+        'cgitb',
+        'chunk',
+        'cmath',
+        'cmd',
+        'code',
+        'codecs',
+        'codeop',
+        'collections',
+        'colorsys',
+        'compileall',
+        'concurrent',
+        'configparser',
+        'contextlib',
+        'contextvars',
+        'copy',
+        'copyreg',
+        'cProfile',
+        'crypt',
+        'csv',
+        'ctypes',
+        'curses',
+        'dataclasses',
+        'datetime',
+        'dbm',
+        'decimal',
+        'difflib',
+        'dis',
+        'distutils',
+        'doctest',
+        'email',
+        'encodings',
+        'ensurepip',
+        'enum',
+        'errno',
+        'faulthandler',
+        'fcntl',
+        'filecmp',
+        'fileinput',
+        'fnmatch',
+        'fractions',
+        'ftplib',
+        'functools',
+        'gc',
+        'getopt',
+        'getpass',
+        'gettext',
+        'glob',
+        'graphlib',
+        'grp',
+        'gzip',
+        'hashlib',
+        'heapq',
+        'hmac',
+        'html',
+        'http',
+        'idlelib',
+        'imaplib',
+        'imghdr',
+        'imp',
+        'importlib',
+        'inspect',
+        'io',
+        'ipaddress',
+        'itertools',
+        'json',
+        'keyword',
+        'linecache',
+        'locale',
+        'logging',
+        'lzma',
+        'mailbox',
+        'mailcap',
+        'marshal',
+        'math',
+        'mimetypes',
+        'mmap',
+        'modulefinder',
+        'msilib',
+        'msvcrt',
+        'multiprocessing',
+        'netrc',
+        'nis',
+        'nntplib',
+        'numbers',
+        'operator',
+        'optparse',
+        'os',
+        'ossaudiodev',
+        'pathlib',
+        'pdb',
+        'pickle',
+        'pickletools',
+        'pipes',
+        'pkgutil',
+        'platform',
+        'plistlib',
+        'poplib',
+        'posix',
+        'pprint',
+        'profile',
+        'pstats',
+        'pty',
+        'pwd',
+        'py_compile',
+        'pyclbr',
+        'pydoc',
+        'queue',
+        'quopri',
+        'random',
+        're',
+        'readline',
+        'reprlib',
+        'resource',
+        'rlcompleter',
+        'runpy',
+        'sched',
+        'secrets',
+        'select',
+        'selectors',
+        'shelve',
+        'shlex',
+        'shutil',
+        'signal',
+        'site',
+        'sitecustomize',
+        'smtpd',
+        'smtplib',
+        'sndhdr',
+        'socket',
+        'socketserver',
+        'spwd',
+        'sqlite3',
+        'ssl',
+        'stat',
+        'statistics',
+        'string',
+        'stringprep',
+        'struct',
+        'subprocess',
+        'sunau',
+        'symtable',
+        'sys',
+        'sysconfig',
+        'syslog',
+        'tabnanny',
+        'tarfile',
+        'telnetlib',
+        'tempfile',
+        'termios',
+        'test',
+        'textwrap',
+        'threading',
+        'time',
+        'timeit',
+        'tkinter',
+        'token',
+        'tokenize',
+        'tomllib',
+        'trace',
+        'traceback',
+        'tracemalloc',
+        'tty',
+        'turtle',
+        'turtledemo',
+        'types',
+        'typing',
+        'unicodedata',
+        'unittest',
+        'urllib',
+        'usercustomize',
+        'uu',
+        'uuid',
+        'venv',
+        'warnings',
+        'wave',
+        'weakref',
+        'webbrowser',
+        'winreg',
+        'winsound',
+        'wsgiref',
+        'xdrlib',
+        'xml',
+        'xmlrpc',
+        'zipapp',
+        'zipfile',
+        'zipimport',
+        'zlib',
+        'zoneinfo',
+      ];
 
-        let score = 0;
-        let questionNumber = 0;
-        let currentWord = '';
-        let isModule = false;
-        let totalQuestions = 20;
-        let mistakes = [];
+      let score = 0;
+      let questionNumber = 0;
+      let currentWord = '';
+      let isModule = false;
+      let totalQuestions = 20;
+      let mistakes = [];
+      let usedModules = [];
+      let usedWords = [];
 
-        function alterModuleName(name) {
-            let alteredName = name;
-            const operations = ['substitute', 'insert', 'delete'];
-            const numChanges = Math.max(1, Math.floor(name.length / 2));
-            for (let i = 0; i < numChanges; i++) {
-                const operation = operations[Math.floor(Math.random() * operations.length)];
-                const index = Math.floor(Math.random() * alteredName.length);
-                if (operation === 'substitute') {
-                    // Substitute a character
-                    const letters = 'abcdefghijklmnopqrstuvwxyz';
-                    const newChar = letters.charAt(Math.floor(Math.random() * letters.length));
-                    alteredName = alteredName.substring(0, index) + newChar + alteredName.substring(index + 1);
-                } else if (operation === 'insert') {
-                    // Insert a character
-                    const letters = 'abcdefghijklmnopqrstuvwxyz';
-                    const newChar = letters.charAt(Math.floor(Math.random() * letters.length));
-                    alteredName = alteredName.substring(0, index) + newChar + alteredName.substring(index);
-                } else if (operation === 'delete') {
-                    // Delete a character
-                    if (alteredName.length > 1) {
-                        alteredName = alteredName.substring(0, index) + alteredName.substring(index + 1);
-                    }
-                }
+      function alterModuleName(name) {
+        let alteredName;
+        const operations = ['substitute', 'insert', 'delete'];
+        const numChanges = Math.max(1, Math.floor(name.length / 2));
+        do {
+          alteredName = name;
+          for (let i = 0; i < numChanges; i++) {
+            const operation =
+              operations[Math.floor(Math.random() * operations.length)];
+            const index = Math.floor(Math.random() * alteredName.length);
+            if (operation === 'substitute') {
+              // Substitute a character
+              const charset = 'abcdefghijklmnopqrstuvwxyz123_';
+              const newChar = charset.charAt(
+                Math.floor(Math.random() * charset.length)
+              );
+              alteredName =
+                alteredName.substring(0, index) +
+                newChar +
+                alteredName.substring(index + 1);
+            } else if (operation === 'insert') {
+              // Insert a character
+              const charset = 'abcdefghijklmnopqrstuvwxyz123';
+              const newChar = charset.charAt(
+                Math.floor(Math.random() * charset.length)
+              );
+              alteredName =
+                alteredName.substring(0, index) +
+                newChar +
+                alteredName.substring(index);
+            } else if (operation === 'delete') {
+              // Delete a character
+              if (alteredName.length > 1) {
+                alteredName =
+                  alteredName.substring(0, index) +
+                  alteredName.substring(index + 1);
+              }
             }
-            // Ensure it's not an actual module name
-            if (modules.includes(alteredName) || alteredName === name) {
-                return alterModuleName(name); // Retry
-            }
-            return alteredName;
+          }
+        } while (
+          modules.includes(alteredName) ||
+          alteredName === name ||
+          usedWords.includes(alteredName)
+        );
+        return alteredName;
+      }
+
+      function nextQuestion() {
+        if (questionNumber >= totalQuestions) {
+          endGame();
+          return;
+        }
+        questionNumber++;
+        // Randomly decide to show a module name or altered module name
+        isModule = Math.random() < 0.5;
+
+        // Need to pick a module name that hasn't been used before
+        let moduleName;
+        do {
+          moduleName = modules[Math.floor(Math.random() * modules.length)];
+        } while (usedModules.includes(moduleName));
+
+        usedModules.push(moduleName);
+
+        if (isModule) {
+          currentWord = moduleName;
+        } else {
+          currentWord = alterModuleName(moduleName);
         }
 
-        function nextQuestion() {
-            if (questionNumber >= totalQuestions) {
-                endGame();
-                return;
-            }
-            questionNumber++;
-            // Randomly decide to show a module name or altered module name
-            isModule = Math.random() < 0.5;
-            const moduleName = modules[Math.floor(Math.random() * modules.length)];
-            if (isModule) {
-                currentWord = moduleName;
+        // Ensure currentWord hasn't been used before
+        while (usedWords.includes(currentWord)) {
+          if (!isModule) {
+            // Generate a new altered name
+            currentWord = alterModuleName(moduleName);
+          } else {
+            // Should not happen since moduleName is unique
+            break;
+          }
+        }
+
+        usedWords.push(currentWord);
+        document.getElementById('word').textContent = currentWord;
+      }
+
+      function guess(userGuess) {
+        const correct =
+          (userGuess === 'module' && isModule) ||
+          (userGuess === 'altered' && !isModule);
+        if (correct) {
+          score++;
+        } else {
+          mistakes.push({
+            word: currentWord,
+            correctAnswer: isModule ? 'module' : 'random letters',
+          });
+        }
+        nextQuestion();
+      }
+
+      function endGame() {
+        document.getElementById('word').style.display = 'none';
+        document.getElementById('buttons').style.display = 'none';
+        document.getElementById(
+          'score'
+        ).textContent = `Your score: ${score} out of ${totalQuestions}`;
+        document.getElementById('tryAgain').style.display = 'block';
+        showMistakes();
+        launchConfetti();
+      }
+
+      function showMistakes() {
+        if (mistakes.length > 0) {
+          let mistakesDiv = document.getElementById('mistakes');
+          mistakesDiv.innerHTML = '<h2>You had some mistakes:</h2><ul>';
+          mistakes.forEach((mistake) => {
+            if (mistake.correctAnswer === 'module') {
+              const link = `https://docs.python.org/3.12/library/${mistake.word}.html`;
+              mistakesDiv.innerHTML += `<li><strong><a href="${link}" target="_blank">${mistake.word}</a></strong> was a ${mistake.correctAnswer}</li>`;
             } else {
-                currentWord = alterModuleName(moduleName);
+              mistakesDiv.innerHTML += `<li><strong>${mistake.word}</strong> were random letters</li>`;
             }
-            document.getElementById('word').textContent = currentWord;
+          });
+          mistakesDiv.innerHTML += '</ul>';
         }
+      }
 
-        function guess(userGuess) {
-            const correct = (userGuess === 'module' && isModule) || (userGuess === 'altered' && !isModule);
-            if (correct) {
-                score++;
-            } else {
-                mistakes.push({
-                    word: currentWord,
-                    correctAnswer: isModule ? 'Module' : 'random letters'
-                });
-            }
-            nextQuestion();
-        }
+      function startGame() {
+        score = 0;
+        questionNumber = 0;
+        mistakes = [];
+        usedModules = [];
+        usedWords = [];
+        document.getElementById('word').style.display = 'block';
+        document.getElementById('buttons').style.display = 'block';
+        document.getElementById('score').textContent = '';
+        document.getElementById('tryAgain').style.display = 'none';
+        document.getElementById('mistakes').innerHTML = '';
+        nextQuestion();
+      }
 
-        function endGame() {
-            document.getElementById('word').style.display = 'none';
-            document.getElementById('buttons').style.display = 'none';
-            document.getElementById('score').textContent = `Your score: ${score} out of ${totalQuestions}`;
-            document.getElementById('tryAgain').style.display = 'block';
-            showMistakes();
-            launchConfetti();
-        }
+      // Confetti effect using canvas-confetti
+      function launchConfetti() {
+        var confettiCanvas = document.getElementById('confetti-canvas');
+        var myConfetti = confetti.create(confettiCanvas, {
+          resize: true,
+          useWorker: true,
+        });
+        myConfetti({
+          particleCount: 200,
+          spread: 160,
+          startVelocity: 60,
+          origin: { y: 0.6 },
+        });
+      }
 
-        function showMistakes() {
-            if (mistakes.length > 0) {
-                let mistakesDiv = document.getElementById('mistakes');
-                mistakesDiv.innerHTML = '<h2>You had some mistakes:</h2><ul>';
-                mistakes.forEach(mistake => {
-                    if (mistake.correctAnswer === 'Module') {
-                        const link = `https://docs.python.org/3/library/${mistake.word}.html`;
-                        mistakesDiv.innerHTML += `<li><strong><a href="${link}" target="_blank">${mistake.word}</a></strong> was a ${mistake.correctAnswer}</li>`;
-                    } else {
-                        mistakesDiv.innerHTML += `<li><strong>${mistake.word}</strong> were random letters</li>`;
-                    }
-                });
-                mistakesDiv.innerHTML += '</ul>';
-            }
-        }
-
-        function startGame() {
-            score = 0;
-            questionNumber = 0;
-            mistakes = [];
-            document.getElementById('word').style.display = 'block';
-            document.getElementById('buttons').style.display = 'block';
-            document.getElementById('score').textContent = '';
-            document.getElementById('tryAgain').style.display = 'none';
-            document.getElementById('mistakes').innerHTML = '';
-            nextQuestion();
-        }
-
-        // Confetti effect using canvas-confetti
-        function launchConfetti() {
-            var confettiCanvas = document.getElementById('confetti-canvas');
-            var myConfetti = confetti.create(confettiCanvas, {
-                resize: true,
-                useWorker: true
-            });
-            myConfetti({
-                particleCount: 200,
-                spread: 160,
-                startVelocity: 60,
-                origin: { y: 0.6 }
-            });
-        }
-
-        // Load confetti script
-        (function() {
-            var script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
-            script.onload = function() {
-                startGame();
-            };
-            document.head.appendChild(script);
-        })();
+      // Load confetti script
+      (function () {
+        var script = document.createElement('script');
+        script.src =
+          'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
+        script.onload = function () {
+          startGame();
+        };
+        document.head.appendChild(script);
+      })();
     </script>
-</body>
+  </body>
 </html>
